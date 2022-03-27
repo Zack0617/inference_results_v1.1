@@ -1005,15 +1005,15 @@ class GeForce_RTX_3060x1(OfflineGPUBaseConfig):
     system = System("GeForce_RTX_3060", Architecture.Ampere, 1)
     enable_interleaved = True
     use_small_tile_gemm_plugin = False
-    gpu_batch_size = 192
-    offline_expected_qps = 850
+    gpu_batch_size = 256
+    offline_expected_qps = 665
 
 
 @ConfigRegistry.register(HarnessType.Custom, AccuracyTarget.k_99_9, PowerSetting.MaxP)
 class GeForce_RTX_3060x1_HighAccuracy(GeForce_RTX_3060x1):
     precision = "fp16"
     gpu_inference_streams = 1
-    offline_expected_qps = 400
+    offline_expected_qps = 320
 
 
 @ConfigRegistry.register(HarnessType.Triton, AccuracyTarget.k_99, PowerSetting.MaxP)
@@ -1025,4 +1025,4 @@ class GeForce_RTX_3060x1_Triton(GeForce_RTX_3060x1):
 class GeForce_RTX_3060x1_HighAccuracy_Triton(GeForce_RTX_3060x1_HighAccuracy):
     use_triton = True
     gpu_inference_streams = 2
-    offline_expected_qps = 370
+    offline_expected_qps = 310
