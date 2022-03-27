@@ -331,7 +331,7 @@ class KnownSystems(object):
     Xavier_NX = SystemClass("Xavier_NX", ["Xavier NX"], [], Architecture.Xavier, [1], cpu_arch=CPUArch.aarch64)
     A30 = SystemClass("A30", ["A30"], ["20B7"], Architecture.Ampere, [1, 8],
                       valid_mig_slices=[MIGSlice(1, 6), MIGSlice(2, 12), MIGSlice(4, 24)])
-
+    GeForce_RTX_3060 = SystemClass("GeForce_RTX_3060", ["GeForce RTX 3060"], ["2487"], Architecture.Ampere, [1])
     # CPU Systems
     Triton_CPU_2S_6258R = SystemClass("Triton_CPU_2S_6258R", ["2S_6258R"], [], Architecture.Intel_CPU_x86_64, [1])
     Triton_CPU_4S_8380H = SystemClass("Triton_CPU_4S_8380H", ["4S_8380H"], [], Architecture.Intel_CPU_x86_64, [1])

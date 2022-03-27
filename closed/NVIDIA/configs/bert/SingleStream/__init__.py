@@ -1326,3 +1326,82 @@ class Xavier_NX_Triton(BenchmarkConfiguration):
     scenario = Scenario.SingleStream
     benchmark = Benchmark.BERT
     use_triton = True
+    
+    
+@ConfigRegistry.register(HarnessType.Custom, AccuracyTarget.k_99, PowerSetting.MaxP)
+class GeForce_RTX_3060x1(BenchmarkConfiguration):
+    system = System("GeForce_RTX_3060", Architecture.Ampere, 1)
+    bert_opt_seqlen = 270
+    coalesced_tensor = True
+    gpu_batch_size = 1
+    gpu_copy_streams = 1
+    gpu_inference_streams = 1
+    input_dtype = "int32"
+    input_format = "linear"
+    precision = "int8"
+    tensor_path = "${PREPROCESSED_DATA_DIR}/squad_tokenized/input_ids.npy,${PREPROCESSED_DATA_DIR}/squad_tokenized/segment_ids.npy,${PREPROCESSED_DATA_DIR}/squad_tokenized/input_mask.npy"
+    use_small_tile_gemm_plugin = False
+    single_stream_expected_latency_ns = 5600000
+    use_graphs = True
+    scenario = Scenario.SingleStream
+    benchmark = Benchmark.BERT
+
+
+@ConfigRegistry.register(HarnessType.Custom, AccuracyTarget.k_99_9, PowerSetting.MaxP)
+class GeForce_RTX_3060x1_HighAccuracy(BenchmarkConfiguration):
+    system = System("GeForce_RTX_3060", Architecture.Ampere, 1)
+    bert_opt_seqlen = 270
+    coalesced_tensor = True
+    gpu_batch_size = 1
+    gpu_copy_streams = 1
+    gpu_inference_streams = 1
+    input_dtype = "int32"
+    input_format = "linear"
+    precision = "fp16"
+    tensor_path = "${PREPROCESSED_DATA_DIR}/squad_tokenized/input_ids.npy,${PREPROCESSED_DATA_DIR}/squad_tokenized/segment_ids.npy,${PREPROCESSED_DATA_DIR}/squad_tokenized/input_mask.npy"
+    use_small_tile_gemm_plugin = False
+    single_stream_expected_latency_ns = 5600000
+    use_graphs = True
+    scenario = Scenario.SingleStream
+    benchmark = Benchmark.BERT
+
+
+@ConfigRegistry.register(HarnessType.Triton, AccuracyTarget.k_99_9, PowerSetting.MaxP)
+class GeForce_RTX_3060x1_HighAccuracy_Triton(BenchmarkConfiguration):
+    system = System("GeForce_RTX_3060", Architecture.Ampere, 1)
+    bert_opt_seqlen = 270
+    coalesced_tensor = True
+    gpu_batch_size = 1
+    gpu_copy_streams = 1
+    gpu_inference_streams = 1
+    input_dtype = "int32"
+    input_format = "linear"
+    precision = "fp16"
+    tensor_path = "${PREPROCESSED_DATA_DIR}/squad_tokenized/input_ids.npy,${PREPROCESSED_DATA_DIR}/squad_tokenized/segment_ids.npy,${PREPROCESSED_DATA_DIR}/squad_tokenized/input_mask.npy"
+    use_small_tile_gemm_plugin = False
+    single_stream_expected_latency_ns = 5600000
+    use_graphs = True
+    scenario = Scenario.SingleStream
+    benchmark = Benchmark.BERT
+    use_triton = True
+
+
+@ConfigRegistry.register(HarnessType.Triton, AccuracyTarget.k_99, PowerSetting.MaxP)
+class GeForce_RTX_3060x1_Triton(BenchmarkConfiguration):
+    system = System("GeForce_RTX_3060x1", Architecture.Ampere, 1)
+    bert_opt_seqlen = 270
+    coalesced_tensor = True
+    gpu_batch_size = 1
+    gpu_copy_streams = 1
+    gpu_inference_streams = 1
+    input_dtype = "int32"
+    input_format = "linear"
+    precision = "int8"
+    tensor_path = "${PREPROCESSED_DATA_DIR}/squad_tokenized/input_ids.npy,${PREPROCESSED_DATA_DIR}/squad_tokenized/segment_ids.npy,${PREPROCESSED_DATA_DIR}/squad_tokenized/input_mask.npy"
+    use_small_tile_gemm_plugin = False
+    single_stream_expected_latency_ns = 5600000
+    use_graphs = True
+    scenario = Scenario.SingleStream
+    benchmark = Benchmark.BERT
+    use_triton = True
+
