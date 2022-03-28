@@ -857,3 +857,26 @@ class Xavier_NX_MaxQ(BenchmarkConfiguration):
     xavier_dla_freq = 115200000
     xavier_cpu_freq = 1190400
     xavier_emc_freq = 1600000000
+    
+    
+@ConfigRegistry.register(HarnessType.Custom, AccuracyTarget.k_99, PowerSetting.MaxP)
+class GeForce_RTX_3060x1(BenchmarkConfiguration):
+    system = System("GeForce_RTX_3060", Architecture.Ampere, 1)
+    gpu_inference_streams = 1
+    input_dtype = "fp16"
+    input_format = "linear"
+    map_path = "data_maps/rnnt_dev_clean_512/val_map.txt"
+    precision = "fp16"
+    tensor_path = "${PREPROCESSED_DATA_DIR}/rnnt_dev_clean_512/fp16"
+    use_graphs = True
+    audio_batch_size = 128
+    audio_buffer_num_lines = 4096
+    dali_batches_issue_ahead = 4
+    dali_pipeline_depth = 4
+    disable_encoder_plugin = True
+    gpu_batch_size = 2048
+    gpu_copy_streams = 4
+    offline_expected_qps = 2050
+    num_warmups = 2048
+    scenario = Scenario.Offline
+    benchmark = Benchmark.RNNT
