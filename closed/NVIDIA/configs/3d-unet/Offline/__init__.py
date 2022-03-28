@@ -967,3 +967,26 @@ class Triton_CPU_4S_8380Hx1(OfflineCPUBaseConfig):
 @ConfigRegistry.register(HarnessType.Triton, AccuracyTarget.k_99_9, PowerSetting.MaxP)
 class Triton_CPU_4S_8380Hx1_HighAccuracy(Triton_CPU_4S_8380Hx1):
     pass
+    
+    
+@ConfigRegistry.register(HarnessType.LWIS, AccuracyTarget.k_99, PowerSetting.MaxP)
+class GeForce_RTX_3060x1(OfflineGPUBaseConfig):
+    system = System("GeForce_RTX_3060", Architecture.Ampere, 1)
+    gpu_batch_size = 2
+    offline_expected_qps = 14
+
+
+@ConfigRegistry.register(HarnessType.LWIS, AccuracyTarget.k_99_9, PowerSetting.MaxP)
+class GeForce_RTX_3060x1_HighAccuracy(GeForce_RTX_3060x1):
+    pass
+
+
+@ConfigRegistry.register(HarnessType.Triton, AccuracyTarget.k_99, PowerSetting.MaxP)
+class GeForce_RTX_3060x1_Triton(GeForce_RTX_3060x1):
+    use_triton = True
+
+
+@ConfigRegistry.register(HarnessType.Triton, AccuracyTarget.k_99_9, PowerSetting.MaxP)
+class GeForce_RTX_3060x1_HighAccuracy_Triton(GeForce_RTX_3060x1_Triton):
+    pass
+

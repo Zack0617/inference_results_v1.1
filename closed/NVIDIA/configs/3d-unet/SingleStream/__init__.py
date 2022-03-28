@@ -444,25 +444,25 @@ class Xavier_NX_HighAccuracy_MaxQ(Xavier_NX_MaxQ):
 
 
 @ConfigRegistry.register(HarnessType.LWIS, AccuracyTarget.k_99, PowerSetting.MaxP)
-class T4x1(SingleStreamGPUBaseConfig):
-    system = System("T4", Architecture.Turing, 1)
+class GeForce_RTX_3060x1(SingleStreamGPUBaseConfig):
+    system = System("GeForce_RTX_3060", Architecture.Ampere, 1)
     precision = "int8"
     input_dtype = "int8"
     input_format = "cdhw32"
     tensor_path = "${PREPROCESSED_DATA_DIR}/brats/brats_npy/int8_cdhw32"
-    single_stream_expected_latency_ns = 160000000
+    single_stream_expected_latency_ns = 100000000
 
 
 @ConfigRegistry.register(HarnessType.LWIS, AccuracyTarget.k_99_9, PowerSetting.MaxP)
-class T4x1_HighAccuracy(T4x1):
+class GeForce_RTX_3060x1_HighAccuracy(GeForce_RTX_3060x1):
     pass
 
 
 @ConfigRegistry.register(HarnessType.Triton, AccuracyTarget.k_99, PowerSetting.MaxP)
-class T4x1_Triton(T4x1):
+class GeForce_RTX_3060x1_Triton(GeForce_RTX_3060x1):
     use_triton = True
 
 
 @ConfigRegistry.register(HarnessType.Triton, AccuracyTarget.k_99_9, PowerSetting.MaxP)
-class T4x1_HighAccuracy_Triton(T4x1_Triton):
+class GeForce_RTX_3060x1_HighAccuracy_Triton(GeForce_RTX_3060x1_Triton):
     pass
