@@ -1382,3 +1382,38 @@ class Xavier_NX_Triton(BenchmarkConfiguration):
     scenario = Scenario.Offline
     benchmark = Benchmark.SSDResNet34
     use_triton = True
+
+
+@ConfigRegistry.register(HarnessType.LWIS, AccuracyTarget.k_99, PowerSetting.MaxP)
+class GeForce_RTX_3060x1(BenchmarkConfiguration):
+    system = System("GeForce_RTX_3060", Architecture.Ampere, 1)
+    input_dtype = "int8"
+    input_format = "linear"
+    map_path = "data_maps/coco/val_map.txt"
+    precision = "int8"
+    tensor_path = "${PREPROCESSED_DATA_DIR}/coco/val2017/SSDResNet34/int8_linear"
+    use_graphs = False
+    gpu_batch_size = 12
+    gpu_copy_streams = 4
+    gpu_inference_streams = 1
+    scenario = Scenario.Offline
+    benchmark = Benchmark.SSDResNet34
+    offline_expected_qps = 195
+
+
+@ConfigRegistry.register(HarnessType.Triton, AccuracyTarget.k_99, PowerSetting.MaxP)
+class GeForce_RTX_3060x1_Triton(BenchmarkConfiguration):
+    system = System("GeForce_RTX_3060", Architecture.Ampere, 1)
+    input_dtype = "int8"
+    input_format = "linear"
+    map_path = "data_maps/coco/val_map.txt"
+    precision = "int8"
+    tensor_path = "${PREPROCESSED_DATA_DIR}/coco/val2017/SSDResNet34/int8_linear"
+    use_graphs = False
+    gpu_batch_size = 12
+    gpu_copy_streams = 4
+    gpu_inference_streams = 1
+    scenario = Scenario.Offline
+    benchmark = Benchmark.SSDResNet34
+    use_triton = True
+    offline_expected_qps = 195

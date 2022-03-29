@@ -658,3 +658,38 @@ class Xavier_NX_Triton(BenchmarkConfiguration):
     benchmark = Benchmark.SSDMobileNet
     use_triton = True
     single_stream_expected_latency_ns = 2000000
+
+
+@ConfigRegistry.register(HarnessType.LWIS, AccuracyTarget.k_99, PowerSetting.MaxP)
+class GeForce_RTX_3060x1(BenchmarkConfiguration):
+    system = System("GeForce_RTX_3060", Architecture.Ampere, 1)
+    gpu_batch_size = 1
+    gpu_copy_streams = 1
+    gpu_inference_streams = 1
+    input_dtype = "int8"
+    map_path = "data_maps/coco/val_map.txt"
+    precision = "int8"
+    use_graphs = True
+    input_format = "chw4"
+    tensor_path = "${PREPROCESSED_DATA_DIR}/coco/val2017/SSDMobileNet/int8_chw4"
+    scenario = Scenario.SingleStream
+    benchmark = Benchmark.SSDMobileNet
+    single_stream_expected_latency_ns = 271000
+
+
+@ConfigRegistry.register(HarnessType.Triton, AccuracyTarget.k_99, PowerSetting.MaxP)
+class GeForce_RTX_3060x1_Triton(BenchmarkConfiguration):
+    system = System("GeForce_RTX_3060", Architecture.Ampere, 1)
+    gpu_batch_size = 1
+    gpu_copy_streams = 1
+    gpu_inference_streams = 1
+    input_dtype = "int8"
+    map_path = "data_maps/coco/val_map.txt"
+    precision = "int8"
+    use_graphs = True
+    input_format = "chw4"
+    tensor_path = "${PREPROCESSED_DATA_DIR}/coco/val2017/SSDMobileNet/int8_chw4"
+    scenario = Scenario.SingleStream
+    benchmark = Benchmark.SSDMobileNet
+    use_triton = True
+    single_stream_expected_latency_ns = 271000
