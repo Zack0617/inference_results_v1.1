@@ -18,7 +18,10 @@ sudo apt install -y python3.8 python3.8-dev \
  && sudo ln -s /usr/bin/python3.8 /usr/bin/python3 \
  && sudo rm -rf /usr/bin/python \
  && sudo ln -s /usr/bin/python3 /usr/bin/python \
- && sudo apt -y autoremove
+ && sudo apt -y autoremove \
+ && sudo apt install -y curl python3-pip \
+ && pip3 install --upgrade pip \
+ && pip3 install testresources
 
 sudo apt install -y cuda-toolkit-10.2
 sudo apt install -y virtualenv moreutils libnuma-dev numactl sshpass
@@ -46,7 +49,7 @@ sudo apt remove -y cmake \
   && sudo rm -rf cmake-* \
   && wget https://cmake.org/files/v3.18/cmake-3.18.4.tar.gz \
   && tar -xf cmake-3.18.4.tar.gz \
-  && cd cmake-3.18.4 && ./configure && sudo make -j2 install \
+  && cd cmake-3.18.4 && ./configure && sudo make -j$(nproc) install \
   && sudo ln -s /usr/local/bin/cmake /usr/bin/cmake \
   && cd /tmp && rm -rf cmake-*
 
@@ -86,7 +89,7 @@ sudo rm -rf gflags \
  && cd gflags \
  && mkdir build && cd build \
  && cmake -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=ON -DBUILD_gflags_LIB=ON .. \
- && make -j \
+ && make -j$(nproc) \
  && sudo make install \
  && cd /tmp && sudo rm -rf gflags
 
@@ -132,7 +135,7 @@ rm -rf protobuf-cpp-3.11.1.tar.gz \
  && rm protobuf-cpp-3.11.1.tar.gz \
  && cd protobuf-3.11.1 \
  && ./configure CXXFLAGS="-fPIC" --prefix=/usr/local --disable-shared \
- && make -j2 \
+ && make -j$(nproc) \
  && sudo make install \
  && sudo ldconfig \
  && cd /tmp \
@@ -147,7 +150,7 @@ rm -rf protobuf-cpp-3.11.1.tar.gz \
     -DBUILD_PYTHON=ON -DBUILD_TEST=OFF -DBUILD_BENCHMARK=OFF -DBUILD_LMDB=OFF -DBUILD_NVTX=OFF -DBUILD_NVJPEG=OFF \
     -DBUILD_LIBTIFF=OFF -DBUILD_NVOF=OFF -DBUILD_NVDEC=OFF -DBUILD_LIBSND=OFF -DBUILD_NVML=OFF -DBUILD_FFTS=ON \
     -DVERBOSE_LOGS=OFF -DWERROR=OFF -DBUILD_WITH_ASAN=OFF .. \
- && sudo make -j2 \
+ && sudo make -j$(nproc) \
  && sudo make install \
  && sudo python3 -m pip install dali/python/ \
  && sudo mv /usr/local/DALI/build/dali/python/nvidia/dali /tmp/dali \
@@ -155,6 +158,30 @@ rm -rf protobuf-cpp-3.11.1.tar.gz \
  && sudo mkdir -p /usr/local/DALI/build/dali/python/nvidia/ \
  && sudo mv /tmp/dali /usr/local/DALI/build/dali/python/nvidia/ \
  && cd /tmp
+
+# TensorRT Python3.8 Bindings
+# Following https://github.com/NVIDIA/TensorRT/tree/main/python
+cd \
+ && wget https://www.python.org/ftp/python/3.8.13/Python-3.8.13.tgz \
+ && tar xvzf Python-3.8.13.tgz \
+ && sudo rm -f Python-3.8.13.tgz \
+ && mkdir python3.8 \
+ && mkdir python3.8/include \
+ && cp /usr/include/aarch64-linux-gnu/python3.8/pyconfig.h  python3.8/include/ \
+ && cp -r Python-3.8.13/Include/* python3.8/include/ \
+ && git clone https://github.com/pybind/pybind11.git -b v2.6.2 \
+ && git clone -b release/8.0 https://github.com/NVIDIA/TensorRT.git \
+ && cd TensorRT \
+ && git submodule update --init --recursive \
+ && cd python/ \
+ && TRT_OSSPATH=${PWD}/.. EXT_PATH=${PWD}/../.. TARGET=aarch64 PYTHON_MAJOR_VERSION=3 PYTHON_MINOR_VERSION=8 ./build.sh \
+ && python3 -m pip uninstall tensorrt -y \
+ && python3 -m pip install build/dist/tensorrt-*.whl \
+ && cd \
+ && sudo rm -rf Python-3.8.13 \
+ && sudo rm -rf python3.8 \
+ && sudo rm -rf pybind11 \
+ && sudo rm -rf TensorRT
 
 # Install ONNX graph surgeon, needed for 3D-Unet ONNX preprocessing.
 cd /tmp \
