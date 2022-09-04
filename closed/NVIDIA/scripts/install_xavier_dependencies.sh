@@ -188,7 +188,7 @@ cd /tmp \
  && rm -rf TensorRT \
  && git clone https://github.com/NVIDIA/TensorRT.git \
  && cd TensorRT \
- && git checkout release/7.2 \
+ && git checkout release/8.0 \
  && cd tools/onnx-graphsurgeon \
  && make build \
  && sudo python3 -m pip install --no-deps -t /usr/local/lib/python3.8/dist-packages --force-reinstall dist/*.whl \
